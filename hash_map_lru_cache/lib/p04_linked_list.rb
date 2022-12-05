@@ -1,3 +1,5 @@
+require_relative "enumerable"
+
 class Node
   attr_reader :key
   attr_accessor :val, :next, :prev
@@ -14,13 +16,19 @@ class Node
   end
 
   def remove
-    # optional but useful, connects previous link to next link
-    # and removes self from list.
+    @next.prev = prev
+    prev.next = @next
   end
 end
 
 class LinkedList
+    include Enumerable
+    attr_reader :head, :tail
   def initialize
+    @head = Node.new(0, "head")
+    @tail = Node.new(1, "tail")
+    @head.next = @tail
+    @tail.prev = @head
   end
 
   def [](i)
@@ -35,6 +43,7 @@ class LinkedList
   end
 
   def empty?
+    head.next == tail
   end
 
   def get(key)
